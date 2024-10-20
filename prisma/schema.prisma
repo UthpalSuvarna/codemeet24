@@ -24,6 +24,7 @@ model User {
   // Optional for WebAuthn support
   Authenticator Authenticator[]
   role          UserRole        @default(USER)
+  psychiatrist  Psychiatrist?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -48,6 +49,7 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([provider, providerAccountId])
+  @@index([userId])
 }
 
 model Session {
@@ -88,4 +90,14 @@ enum UserRole {
   ADMIN
   USER
   PSYCHIATRIST
+}
+
+model Psychiatrist {
+  id         String   @id @default(cuid())
+  userId     String   @unique
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  clinicName String
+  city       String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
