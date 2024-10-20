@@ -131,7 +131,7 @@ model Patients {
 
 model Status {
   id     String @id @default(cuid())
-  userId String
+  userId String @unique
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   status String
 }
