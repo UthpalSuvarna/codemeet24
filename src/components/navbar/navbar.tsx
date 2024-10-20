@@ -58,6 +58,21 @@ export default function Navbar() {
                             >
                                 Profile
                             </Link>
+                            <Link
+                                href="/exercise"
+                                className="rounded-md px-3 py-2  font-bold transition-colors  hover:text-primary"
+                                prefetch={false}
+                            >
+                                Exercises
+                            </Link>
+                            <Link
+                                href="/psychiatristlist"
+                                className="rounded-md px-3 py-2  font-bold transition-colors  hover:text-primary"
+                                prefetch={false}
+                            >
+                                Psychiatrist
+                            </Link>
+
                             {session ? <>
                                 <Button asChild variant="destructive" className="font-bold">
                                     <Link href="auth/signout">Signout</Link>
@@ -116,6 +131,20 @@ export default function Navbar() {
                                 onClick={closeMenu}
                             >
                                 Profile
+                            </a>
+                            <a
+                                href="/exercise"
+                                className="py-2 text-4xl hover:text-primary"
+                                onClick={closeMenu}
+                            >
+                                Exercise
+                            </a>
+                            <a
+                                href="/psychiatristlist"
+                                className="py-2 text-4xl hover:text-primary"
+                                onClick={closeMenu}
+                            >
+                                Psychiatrist
                             </a>
                             {session ? <>
                                 <Button asChild variant="destructive">
