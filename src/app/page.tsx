@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 
-// Function for creating background animation (like v0)
+// Function for creating background animation with moving shapes and particles
 function BackgroundAnimation() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -18,6 +18,7 @@ function BackgroundAnimation() {
       const height = canvas.height = window.innerHeight;
 
       const particles: { x: number; y: number; r: number; dx: number; dy: number }[] = [];
+      const movingShapes: { x: number; y: number; width: number; height: number; speedX: number; speedY: number }[] = [];
 
       // Create particles
       for (let i = 0; i < 100; i++) {
@@ -30,9 +31,22 @@ function BackgroundAnimation() {
         });
       }
 
+      // Create moving shapes
+      for (let i = 0; i < 10; i++) {
+        movingShapes.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          width: Math.random() * 200 + 50,  // Rectangular width
+          height: Math.random() * 80 + 20,  // Rectangular height
+          speedX: (Math.random() - 0.5) * 1.5,  // Horizontal speed
+          speedY: (Math.random() - 0.5) * 1.5,  // Vertical speed
+        });
+      }
+
       const animate = () => {
         ctx.clearRect(0, 0, width, height);
 
+        // Animate particles
         particles.forEach((p) => {
           p.x += p.dx;
           p.y += p.dy;
@@ -45,6 +59,20 @@ function BackgroundAnimation() {
           ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
           ctx.fill();
           ctx.closePath();
+        });
+
+        // Animate moving shapes (rectangles)
+        movingShapes.forEach((shape) => {
+          shape.x += shape.speedX;
+          shape.y += shape.speedY;
+
+          if (shape.x < 0 || shape.x > width) shape.speedX = -shape.speedX;
+          if (shape.y < 0 || shape.y > height) shape.speedY = -shape.speedY;
+
+          ctx.save();
+          ctx.fillStyle = "rgba(0, 200, 255, 0.3)";
+          ctx.fillRect(shape.x, shape.y, shape.width, shape.height);
+          ctx.restore();
         });
 
         animationFrameId = requestAnimationFrame(animate);
@@ -66,7 +94,13 @@ export default function Home() {
       <BackgroundAnimation />
 
       {/* Foreground Content */}
-      <div className="relative z-10 max-w-4xl p-4">
+      <motion.div
+        className="relative z-10 max-w-4xl p-4"
+        initial={{ y: -10 }}
+        animate={{ y: 10 }}
+        transition={{ duration: 3, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
+      >
+        {/* Heading */}
         <motion.h1
           className="text-5xl md:text-7xl font-bold"
           initial={{ opacity: 0, y: -50 }}
@@ -83,6 +117,8 @@ export default function Home() {
             WellNest
           </motion.span>
         </motion.h1>
+
+        {/* Subheading */}
         <motion.p 
           className="mt-4 text-xl md:text-2xl text-muted-foreground"
           initial={{ opacity: 0, y: 50 }}
@@ -91,6 +127,8 @@ export default function Home() {
         >
           Your one-stop solution for all your <span className="text-primary">mental health and wellness needs.</span>
         </motion.p>
+
+        {/* Call to Action Button */}
         <motion.div 
           className="mt-6"
           initial={{ opacity: 0 }}
@@ -98,14 +136,20 @@ export default function Home() {
           transition={{ duration: 0.8, delay: 0.6 }}
         >
           <Button 
-            className="px-6 py-2 text-lg"
-            whileHover={{ scale: 1.05 }}
+            className="px-6 py-2 text-lg relative overflow-hidden"
+            whileHover={{ scale: 1.05, boxShadow: "0px 4px 20px rgba(0, 200, 255, 0.6)" }}
             whileTap={{ scale: 0.95 }}
           >
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-primary via-secondary to-primary opacity-20"
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 1, ease: "easeOut" }}
+            />
             Get Started
           </Button>
         </motion.div>
-      </div>
+      </motion.div>
     </div>
   );
 }
