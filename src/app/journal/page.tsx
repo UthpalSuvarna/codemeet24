@@ -30,6 +30,9 @@ export default async function JournalList() {
   const journals = await prisma.journals.findMany({
     where: {
       userId: session?.user.id
+    },
+    orderBy: {
+      createdAt: 'desc'
     }
   })
 

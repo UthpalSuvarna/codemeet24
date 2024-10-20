@@ -13,6 +13,29 @@ export async function POST(req: NextRequest) {
         }
     })
 
+    const sending = { "inputs": data.content }
+    const response = await fetch(
+        "https://api-inference.huggingface.co/models/j-hartmann/emotion-english-distilroberta-base",
+        {
+            headers: {
+                Authorization: `Bearer ${process.env.HUGGINGFACE_API_KEY}`,
+                "Content-Type": "application/json",
+            },
+            method: "POST",
+            body: JSON.stringify(sending),
+        }
+    );
+    const result = await response.json();
+    console.log(result[0][0].label);
+
+
+    const updatestatus = await prisma.status.create({
+        data: {
+            status: result[0][0].label,
+            userId: data.sessionId
+        }
+    })
+
     return NextResponse.json({
         message: "hello"
     })
