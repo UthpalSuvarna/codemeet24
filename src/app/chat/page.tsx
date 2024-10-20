@@ -111,14 +111,13 @@ export default function MentalHealthCompanion() {
                                 </Avatar>
 
                                 <div
-                                    className={`rounded-lg p-3 ${message.role === "user"
-                                        ? "bg-primary text-primary-foreground"
-                                        : "bg-secondary text-secondary-foreground"
-                                        }`}
-                                // dangerouslySetInnerHTML={{ __html: message.content }}
-                                >
-                                    {message.content}
-                                </div>
+                                    className={`rounded-lg p-3 ${
+                                        message.role === "user"
+                                            ? "bg-primary text-primary-foreground"
+                                            : "bg-secondary text-secondary-foreground"
+                                    }`}
+                                    dangerouslySetInnerHTML={{ __html: formatMessage(message.content) }}
+                                />
                             </div>
                         </div>
                     ))}
