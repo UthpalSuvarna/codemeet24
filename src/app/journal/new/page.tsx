@@ -75,12 +75,11 @@ export default function NoteTakingApp() {
     };
 
     return (
-        <div className="container mx-auto p-4">
-            <h1 className="text-2xl font-bold mb-4">Note Taking App</h1>
+        <div className="container mx-auto pt-14 mt-5 max-w-7xl">
             <Card className="mb-6">
                 <form onSubmit={handleSubmit}>
                     <CardHeader>
-                        <CardTitle>{editingId !== null ? "Edit Note" : "Add New Note"}</CardTitle>
+                        <CardTitle className="text-2xl">{editingId !== null ? "Edit Note" : "How are you feeling today"}</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <Textarea

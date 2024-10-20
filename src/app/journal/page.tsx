@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/dialog";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
+import Link from "next/link";
 
 
 
@@ -37,16 +38,21 @@ export default async function JournalList() {
   })
 
   return (
-    <div className="container mx-auto p-4 pt-20">
+    <div className="container mx-auto p-4 pt-20 max-w-7xl">
       <h1 className="text-3xl font-bold mb-6 text-center">My Journals</h1>
 
+      <div className="flex justify-end m-3 font-bold">
 
+        <Button asChild variant="outline">
+          <Link href="/journal/new" className="font-bold"> New journal</Link>
+        </Button>
+      </div>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {journals.map((entry) => (
           <Card key={entry.id} className="flex flex-col">
             <CardHeader>
               <div className="flex justify-between items-start">
-                <CardTitle>{entry.createdAt.toString()}</CardTitle>
+                <CardTitle>{entry.createdAt.toDateString()} {entry.createdAt.toLocaleTimeString()}</CardTitle>
               </div>
               <CardDescription>
               </CardDescription>
