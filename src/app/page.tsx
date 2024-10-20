@@ -3,11 +3,11 @@
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 // Function for creating background animation with moving shapes and particles
 function BackgroundAnimation() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d");
@@ -135,6 +135,7 @@ export default function Home() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.6 }}
         >
+          <Link href="/chat">
           <Button 
             className="px-6 py-2 text-lg relative overflow-hidden"
             whileHover={{ scale: 1.05, boxShadow: "0px 4px 20px rgba(0, 200, 255, 0.6)" }}
@@ -148,6 +149,7 @@ export default function Home() {
             />
             Get Started
           </Button>
+        </Link>
         </motion.div>
       </motion.div>
     </div>
