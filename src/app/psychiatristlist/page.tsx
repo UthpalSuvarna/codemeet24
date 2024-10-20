@@ -15,6 +15,7 @@ export type Card = {
     name: string;
     city: string;
     image: string;
+    id: string
 };
 
 export default function PsychiatristDirectory() {
@@ -27,6 +28,7 @@ export default function PsychiatristDirectory() {
                     name: `${psychiatrist.user.name}`,
                     city: psychiatrist.city || "Unknown",
                     image: psychiatrist.user.image || "",
+                    id: psychiatrist.id
                 }));
                 setPsychiatrists(formattedData);
             }

@@ -73,7 +73,7 @@ export default async function Psychiatrist({ params }: { params: { id: string } 
                 </CardContent>
                 <CardFooter className="flex flex-col">
                     {booked ? <>
-                        You have booked a psychiatrist
+                        You have booked this psychiatrist
                     </> : <>
                         <form action={bookPsyc} className="space-y-4 w-full">
 

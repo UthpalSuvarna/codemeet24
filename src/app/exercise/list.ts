@@ -6,7 +6,7 @@ interface Exercise {
 interface ExercisesByMood {
     joy: Exercise[];
     neutral: Exercise[];
-    sad: Exercise[];
+    sadness: Exercise[];
     anger: Exercise[];
     disgust: Exercise[];
 }
@@ -32,7 +32,7 @@ const mindfulExercises: ExercisesByMood = {
             description: "A simple breathing exercise to center your mind, focusing on slow, deep breaths to maintain a sense of calm."
         }
     ],
-    sad: [
+    sadness: [
         {
             title: "Compassion Meditation",
             description: "Focus on self-compassion. Imagine yourself as a friend in need of care and offer kindness to yourself in thoughts."

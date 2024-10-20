@@ -102,7 +102,7 @@ export default function ExpandableCardDemo({ cards }: { cards: Card[] }) {
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
                                         exit={{ opacity: 0 }}
-                                        href={"/"}
+                                        href={`/psychiatristlist/${active.id}`}
                                         target="_blank"
                                         className="px-4 py-3 text-sm rounded-full font-bold bg-green-500 text-white"
                                     >
@@ -153,10 +153,10 @@ export default function ExpandableCardDemo({ cards }: { cards: Card[] }) {
                                     {card.name}
                                 </motion.h3>
                                 <motion.p
-                                    layoutId={`description-${card.name}-${id}`}
+                                    layoutId={`description-${card.city}-${id}`}
                                     className="text-neutral-600 dark:text-neutral-400 text-center md:text-left text-base"
                                 >
-                                    {card.name}
+                                    {card.city}
                                 </motion.p>
                             </div>
                         </div>
