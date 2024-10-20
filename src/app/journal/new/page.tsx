@@ -6,6 +6,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Textarea } from "@/components/ui/textarea"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Trash2, Edit } from "lucide-react"
+import { useSession } from "next-auth/react"
 
 interface Note {
   id: number
@@ -14,19 +15,27 @@ interface Note {
 }
 
 export default function NoteTakingApp() {
+  const { data: session } = useSession();
   const [notes, setNotes] = useState<Note[]>([])
   const [content, setContent] = useState("")
   const [editingId, setEditingId] = useState<number | null>(null)
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    addNote()
+    await fetch("/api/journal/create", {
+      method: "POST",
+      body: JSON.stringify({
+        content,
+        sessionId: session?.user.id
+      })
+    })
+
   }
 
   const addNote = () => {
     if (content.trim()) {
       if (editingId !== null) {
-        setNotes(notes.map(note => 
+        setNotes(notes.map(note =>
           note.id === editingId ? { ...note, content } : note
         ))
         setEditingId(null)
@@ -80,7 +89,7 @@ export default function NoteTakingApp() {
           </CardFooter>
         </form>
       </Card>
-      <ScrollArea className="h-[calc(100vh-300px)]">
+      {/* <ScrollArea className="h-[calc(100vh-300px)]">
         <div className="space-y-4">
           {notes.map((note) => (
             <Card key={note.id}>
@@ -103,7 +112,7 @@ export default function NoteTakingApp() {
             </Card>
           ))}
         </div>
-      </ScrollArea>
+      </ScrollArea> */}
     </div>
   )
 }
