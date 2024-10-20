@@ -48,7 +48,14 @@ export function SelectForm() {
                 sessionId: session?.user.id
             })
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(errorData => {
+                    throw new Error(errorData.error);
+                });
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.message === "updated") {
                 toast.success("Mood submitted successfully!");
@@ -56,7 +63,11 @@ export function SelectForm() {
         })
         .catch(error => {
             console.error("Error submitting mood:", error);
-            toast.error("Failed to submit mood. Please try again.");
+            if (error.message === "A mood entry already exists for today") {
+                toast.error("You've already submitted a mood for today.");
+            } else {
+                toast.error("Failed to submit mood. Please try again.");
+            }
         });
     }
 
