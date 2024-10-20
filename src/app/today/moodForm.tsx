@@ -23,6 +23,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { useSession } from "next-auth/react"
+import { toast } from "sonner"
 
 const FormSchema = z.object({
     mood: z
@@ -47,6 +48,16 @@ export function SelectForm() {
                 sessionId: session?.user.id
             })
         })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === "updated") {
+                toast.success("Mood submitted successfully!");
+            }
+        })
+        .catch(error => {
+            console.error("Error submitting mood:", error);
+            toast.error("Failed to submit mood. Please try again.");
+        });
     }
 
     return (
