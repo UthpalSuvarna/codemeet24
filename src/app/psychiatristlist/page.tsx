@@ -1,10 +1,12 @@
-'use client'
 
-import { useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { Button } from "@/components/ui/button"
+import { auth } from "@/auth"
+import { prisma } from "@/lib/prisma"
+import Link from "next/link"
 
 // Mock data for psychiatrists
 const psychiatrists = [
@@ -66,51 +68,38 @@ const psychiatrists = [
 
 
 
-export default function PsychiatristDirectory() {
-  const [selectedPsychiatrist, setSelectedPsychiatrist] = useState(null)
+export default async function PsychiatristDirectory() {
+
+  const psychiatrists = await prisma.psychiatrist.findMany({
+    include: {
+      user: true
+    }
+  });
 
   return (
     <div className="container mx-auto py-8">
       <h1 className="text-3xl font-bold mb-8 text-center pt-20">Psychiatrist Directory</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {psychiatrists.map((psychiatrist) => (
-          <Dialog key={psychiatrist.id}>
-            <DialogTrigger asChild>
-              <Card className="cursor-pointer hover:shadow-lg transition-shadow">
-                <CardHeader className="flex flex-row items-center gap-4">
-                  <Avatar className="w-12 h-12">
-                    <AvatarImage src={psychiatrist.image} alt={psychiatrist.name} />
-                    <AvatarFallback>{psychiatrist.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <CardTitle>{psychiatrist.name}</CardTitle>
-                    <p className="text-sm text-muted-foreground">{psychiatrist.specialty}</p>
-                  </div>
-                </CardHeader>
-              </Card>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>{psychiatrist.name}</DialogTitle>
-              </DialogHeader>
-              <ScrollArea className="max-h-[60vh]">
-                <div className="space-y-4 p-4">
-                  <Avatar className="w-24 h-24 mx-auto">
-                    <AvatarImage src={psychiatrist.image} alt={psychiatrist.name} />
-                    <AvatarFallback>{psychiatrist.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                  </Avatar>
-                  <h3 className="font-semibold">Specialty</h3>
-                  <p>{psychiatrist.specialty}</p>
-                  <h3 className="font-semibold">Bio</h3>
-                  <p>{psychiatrist.bio}</p>
-                  <h3 className="font-semibold">Education</h3>
-                  <p>{psychiatrist.education}</p>
-                  <h3 className="font-semibold">Contact</h3>
-                  <p>{psychiatrist.contact}</p>
-                </div>
-              </ScrollArea>
-            </DialogContent>
-          </Dialog>
+
+          <Card className="cursor-pointer hover:shadow-lg transition-shadow">
+            <CardHeader className="flex flex-row items-center gap-4">
+              <Avatar className="w-12 h-12">
+                <AvatarImage src={psychiatrist.user.image ?? ""} alt={psychiatrist.user.name ?? ""} />
+                <AvatarFallback>{psychiatrist.clinicName.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+              </Avatar>
+              <div>
+                <CardTitle>{psychiatrist.user.name}</CardTitle>
+                <p className="text-sm text-muted-foreground">{psychiatrist.user.email}</p>
+              </div>
+            </CardHeader>
+            <CardFooter>
+              <Button asChild>
+                <Link href={`psychiatristlist/${psychiatrist.id}`}>Know More</Link>
+              </Button>
+            </CardFooter>
+          </Card>
+
         ))}
       </div>
     </div>
