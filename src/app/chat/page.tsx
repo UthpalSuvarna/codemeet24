@@ -11,13 +11,7 @@ interface Message {
   content: string;
 }
 
-const aiResponses = [
-  "I understand that you're feeling this way. Can you tell me more about what's been going on?",
-  "It sounds like you're going through a difficult time. Remember, it's okay to feel this way.",
-  "I'm here to listen. Have you considered talking to a professional about these feelings?",
-  "Let's try to break this down. What do you think is the main cause of your current state?",
-  "It's brave of you to share your feelings. How can I support you right now?",
-];
+const chatbotAPIUrl = "https://251a-2409-40f2-3018-58f4-2170-8fab-6db5-fe7b.ngrok-free.app/ask"; // Your chatbot API endpoint
 
 export default function MentalHealthCompanion() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -28,19 +22,39 @@ export default function MentalHealthCompanion() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleSubmit = (e?: React.FormEvent) => {
+  const handleSubmit = async (e?: React.FormEvent) => {
     e?.preventDefault();
     if (input.trim()) {
       const newMessage: Message = { role: "user", content: input.trim() };
       setMessages((prev) => [...prev, newMessage]);
       setInput("");
 
-      setTimeout(() => {
-        const aiResponse =
-          aiResponses[Math.floor(Math.random() * aiResponses.length)];
-        const aiMessage: Message = { role: "assistant", content: aiResponse };
+      try {
+        // Send user's message to the chatbot API via POST request
+        const response = await fetch(chatbotAPIUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            question: newMessage.content,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch response from chatbot.");
+        }
+
+        const data = await response.json();
+        const aiMessage: Message = { role: "assistant", content: data.answer };
         setMessages((prev) => [...prev, aiMessage]);
-      }, 1000);
+      } catch (error) {
+        console.error("Error fetching chatbot response:", error);
+        setMessages((prev) => [
+          ...prev,
+          { role: "assistant", content: "Sorry, something went wrong. Please try again later." },
+        ]);
+      }
     }
   };
 
