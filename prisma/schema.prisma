@@ -30,6 +30,10 @@ model User {
   updatedAt DateTime @updatedAt
 
   Journals Journals[]
+
+  Patients Patients[]
+
+  Status Status[]
 }
 
 model Account {
@@ -103,6 +107,8 @@ model Psychiatrist {
   aboutMe    String   @default("")
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+
+  Patients Patients[]
 }
 
 model Journals {
@@ -111,4 +117,19 @@ model Journals {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   text      String
+}
+
+model Patients {
+  id             String       @id @default(cuid())
+  patientId      String       @unique
+  user           User         @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  psychiatristId String
+  psychiatrist   Psychiatrist @relation(fields: [psychiatristId], references: [id], onDelete: Cascade)
+}
+
+model Status {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status String
 }
