@@ -28,14 +28,19 @@ export async function POST(req: NextRequest) {
     const detectedEmotion = emotionResult[0][0].label;
 
     // Update user's emotional status
-    const updatedStatus = await prisma.status.upsert({
-        where: { userId: data.sessionId },
-        update: { status: detectedEmotion },
-        create: {
-            status: detectedEmotion,
-            userId: data.sessionId,
+    // const updatedStatus = await prisma.user.upsert({
+    //     where: { id: data.sessionId },
+    //     update: { status: detectedEmotion },
+    // });
+
+    const updatedStatus = await prisma.user.update({
+        where: {
+            id: data.sessionId,
         },
-    });
+        data: {
+            status: detectedEmotion
+        }
+    })
 
     return NextResponse.json({
         message: "Journal entry created and emotion analyzed successfully",

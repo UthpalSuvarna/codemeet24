@@ -24,9 +24,11 @@ export default async function PsychiatristDashboard() {
     }
   })
 
+  console.log(psychiatrist)
+
   const patients = await prisma.patients.findMany({
     where: {
-      psychiatristId: psychiatrist?.userId,
+      psychiatristId: psychiatrist?.id,
 
     },
     include: {
@@ -35,6 +37,7 @@ export default async function PsychiatristDashboard() {
     }
   })
 
+  console.log(patients)
 
 
 
@@ -42,27 +45,29 @@ export default async function PsychiatristDashboard() {
 
   return (
     <div className="container mx-auto p-6 pt-16">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Status</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {dpatients.map((patient) => (
-            <TableRow key={patient.id}>
-              <TableCell className="font-medium">{patient.name}</TableCell>
-              <TableCell>
-                <span className={`px-2 py-1 rounded-full text-xs font-semibold ${patient.status === "New" ? "bg-green-100 text-green-800" : "bg-blue-100 text-blue-800"
-                  }`}>
-                  {patient.status}
-                </span>
-              </TableCell>
+      <div>{psychiatrist?.user.name}</div>
+      <div className="">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Email</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {patients.map((patient) => (
+              <TableRow key={patient.id}>
+                <TableCell className="font-medium">{patient.user.name}</TableCell>
+                <TableCell>
+                  {patient.user.status}
+                </TableCell>
+                <TableCell>{patient.user.email}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   )
 }

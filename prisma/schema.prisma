@@ -19,6 +19,7 @@ model User {
   email         String          @unique
   emailVerified DateTime?
   image         String?
+  status        String          @default("neutral")
   accounts      Account[]
   sessions      Session[]
   // Optional for WebAuthn support
@@ -32,8 +33,6 @@ model User {
   Journals Journals[]
 
   Patients Patients[]
-
-  Status Status[]
 
   Mood Mood[]
 }
@@ -127,13 +126,6 @@ model Patients {
   user           User         @relation(fields: [patientId], references: [id], onDelete: Cascade)
   psychiatristId String
   psychiatrist   Psychiatrist @relation(fields: [psychiatristId], references: [id], onDelete: Cascade)
-}
-
-model Status {
-  id     String @id @default(cuid())
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  status String
 }
 
 model Mood {
