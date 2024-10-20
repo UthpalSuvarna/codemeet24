@@ -44,10 +44,10 @@ export default async function PsychiatristDashboard() {
 
 
   return (
-    <div className="container mx-auto p-6 pt-16">
-      <div>{psychiatrist?.user.name}</div>
+    <div className="container mx-auto p-6 pt-20 md:mx-32">
+      <div className="text-2xl text-foreground font-bold">Dashboard for {psychiatrist?.user.name}</div>
       <div className="">
-        <Table>
+        <Table >
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
