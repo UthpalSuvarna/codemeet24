@@ -1,36 +1,137 @@
-import SignIn from "@/app/auth/signin/page";
-import Signout from "@/app/auth/signout/page";
-import { auth } from "@/auth"
+"use client";
 import Link from "next/link";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
+import React, { useState } from "react";
+import { useSession } from "next-auth/react";
+// source : https://v0.dev/t/TBh7U1yjpaw
 
-export default async function Navbar() {
-    const session = await auth();
+export default function Navbar() {
+    const [menuOpen, setMenuOpen] = useState(false);
+    const { data: session } = useSession();
+
+    const toggleMenu = () => {
+        setMenuOpen(!menuOpen);
+    };
+    const closeMenu = () => {
+        setMenuOpen(false);
+    };
     return (
-        <div className="w-full flex justify-center items-center absolute">
-            <div className="bg-background container flex justify-between items-center px-5 md:my-5 my-4">
-                <a href="/" className="font-bold text-2xl md:text-3xl">Well<span className="text-primary">Nest</span></a>
-                <div className="flex md:gap-5 gap-2">
-                    {
-                        session ? (
-                            <div>
-                                <Button asChild variant="destructive" className="font-bold mr-2 ">
-                                    <Link href="auth/signout" className="">Sign Out</Link>
+        <>
+            <header className=" fixed top-0 z-40 w-full ">
+
+                <div className="container flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
+                    <div className="flex items-center gap-4">
+                        <Link href="#" className="flex items-center gap-2" prefetch={false}>
+                            <span className="font-extrabold text-2xl">
+                                WELL<span className="text-primary">NEST</span>
+                            </span>
+
+                        </Link>
+                    </div>
+                    <div className="flex items-center gap-4">
+                        <nav className="hidden md:flex md:gap-4">
+                            <Link
+                                href="/"
+                                className="rounded-md px-3 py-2 font-bold transition-colors  hover:text-primary"
+                                prefetch={false}
+                            >
+                                Home
+                            </Link>
+                            <Link
+                                href="/journal"
+                                className="rounded-md px-3 py-2  font-bold transition-colors  hover:text-primary"
+                                prefetch={false}
+                            >
+                                Journal
+                            </Link>
+                            <Link
+                                href="/chat"
+                                className="rounded-md px-3 py-2  font-bold transition-colors  hover:text-primary"
+                                prefetch={false}
+                            >
+                                Chat
+                            </Link>
+                            <Link
+                                href="/profile"
+                                className="rounded-md px-3 py-2  font-bold transition-colors  hover:text-primary"
+                                prefetch={false}
+                            >
+                                Profile
+                            </Link>
+                            {session ? <>
+                                <Button asChild variant="destructive" className="font-bold">
+                                    <Link href="auth/signout">Signout</Link>
                                 </Button>
-                                <Button asChild variant='outline'>
-                                    <Link href="profile" >Profile</Link>
-                                </Button>
-                            </div>
-                        ) : (
-                            <div>
+                            </> : <>
                                 <Button asChild variant="default" className="font-bold">
-                                    <Link href="auth/signin" >Sign In</Link>
+                                    <Link href="auth/signin">Sign In</Link>
                                 </Button>
-                            </div>
-                        )
-                    }
+
+                            </>}
+                        </nav>
+                        <div className="flex items-center md:hidden">
+                            <button
+                                className=" text-4xl font-bold opacity-70 hover:opacity-100 duration-300"
+                                onClick={toggleMenu}
+                            >
+                                &#9776;
+                            </button>
+                        </div>
+                        <div
+                            id="menu"
+                            className={`${menuOpen ? "w-full h-screen" : "hidden"
+                                } bg-background fixed top-0 left-0 z-50 flex flex-col items-center justify-center`}
+                        >
+                            <button
+                                className="absolute top-4 right-4  text-5xl"
+                                onClick={closeMenu}
+                            >
+                                &times;
+                            </button>
+
+                            <a
+                                href="/"
+                                className="py-2 text-4xl hover:text-primary"
+                                onClick={closeMenu}
+                            >
+                                Home
+                            </a>
+                            <a
+                                href="/journal"
+                                className="py-2 text-4xl hover:text-primary"
+                                onClick={closeMenu}
+                            >
+                                Journal
+                            </a>
+                            <a
+                                href="/chat"
+                                className="py-2 text-4xl hover:text-primary"
+                                onClick={closeMenu}
+                            >
+                                Chat
+                            </a>
+                            <a
+                                href="/profile"
+                                className="py-2 text-4xl hover:text-primary"
+                                onClick={closeMenu}
+                            >
+                                Profile
+                            </a>
+                            {session ? <>
+                                <Button asChild variant="destructive">
+                                    <Link href="auth/signout">Signout</Link>
+                                </Button>
+                            </> : <>
+                                <Button asChild variant="default">
+                                    <Link href="auth/signin">Signin</Link>
+                                </Button>
+
+                            </>}
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    )
+                <div className="absolute -z-10 top-0 left-0 w-full h-[150%] bg-gradient-to-b from-background to-transparent"></div>
+            </header>
+        </>
+    );
 }
