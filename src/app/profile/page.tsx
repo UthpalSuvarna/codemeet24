@@ -12,7 +12,7 @@ const user = {
   name: 'Jane Doe',
   email: 'jane@example.com',
   avatar: '/placeholder.svg?height=100&width=100',
-  joinDate: '2023-01-15',
+  joinDate: '2024-10-1',
 }
 
 const moodData = {
@@ -21,7 +21,7 @@ const moodData = {
   '2023-05-05': 'sad',
   '2023-05-10': 'happy',
   '2023-05-15': 'neutral',
-  '2023-05-20': 'sad',
+  '2024-10-5': 'sad',
   // Add more dates as needed
 }
 
