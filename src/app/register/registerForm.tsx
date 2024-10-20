@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { z } from "zod"
+import { date, z } from "zod"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -15,6 +15,7 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { useSession } from "next-auth/react"
 
 const FormSchema = z.object({
     username: z.string().min(2, {
@@ -29,6 +30,7 @@ const FormSchema = z.object({
 })
 
 export function InputForm() {
+    const { data: session } = useSession();
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
@@ -37,6 +39,23 @@ export function InputForm() {
     })
 
     function onSubmit(data: z.infer<typeof FormSchema>) {
+
+        const registerdata = {
+            ...data,
+            userId: session?.user?.id,
+        }
+
+
+        fetch("api/register", {
+            method: "POST",
+            body: JSON.stringify(registerdata),
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }).then((res) => {
+            console.log("Hello");
+        })
+
     }
 
     return (
