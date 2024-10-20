@@ -6,7 +6,8 @@ const registerSchema = z.object({
     username: z.string(),
     city: z.string(),
     clinicname: z.string(),
-    userId: z.string()
+    userId: z.string(),
+    aboutme: z.string()
 })
 
 export async function POST(req: NextRequest, res: NextResponse) {
@@ -19,13 +20,16 @@ export async function POST(req: NextRequest, res: NextResponse) {
                 // username: data.username,
                 city: data.city,
                 clinicName: data.clinicname,
-                userId: data.userId
+                userId: data.userId,
+                aboutMe: data.aboutme
             }
         })
 
 
 
-        return NextResponse.json(result);
+        return NextResponse.json({
+            message: "done"
+        });
     } catch (e: any) {
         return NextResponse.json({
             message: "Error" + e.message,

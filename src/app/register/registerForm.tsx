@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useSession } from "next-auth/react"
+import { Textarea } from "@/components/ui/textarea"
 
 const FormSchema = z.object({
     username: z.string().min(2, {
@@ -26,7 +27,11 @@ const FormSchema = z.object({
     }),
     clinicname: z.string().min(2, {
         message: "Name of your clinic",
-    })
+    }),
+    aboutme: z.string().min(1, {
+        message: "Write about yourself",
+    }
+    )
 })
 
 export function InputForm() {
@@ -53,7 +58,7 @@ export function InputForm() {
                 "Content-Type": "application/json"
             },
         }).then((res) => {
-            console.log("Hello");
+            console.log(res);
         })
 
     }
@@ -109,6 +114,26 @@ export function InputForm() {
                         </FormItem>
                     )}
                 />
+                <FormField
+                    control={form.control}
+                    name="aboutme"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>About You</FormLabel>
+                            <FormControl>
+                                <Textarea
+                                    placeholder="Write about your serice"
+                                    className="resize-none"
+                                    {...field}
+                                />
+                            </FormControl>
+                            <FormDescription>
+                            </FormDescription>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
 
                 <Button type="submit">Submit</Button>
             </form>
