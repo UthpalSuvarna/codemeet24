@@ -22,6 +22,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { useSession } from "next-auth/react"
 
 const FormSchema = z.object({
     mood: z
@@ -36,7 +37,16 @@ export function SelectForm() {
         resolver: zodResolver(FormSchema),
     })
 
+    const { data: session } = useSession();
+
     function onSubmit(data: z.infer<typeof FormSchema>) {
+        fetch("/api/mood", {
+            method: "POST",
+            body: JSON.stringify({
+                mood: data.mood,
+                sessionId: session?.user.id
+            })
+        })
     }
 
     return (

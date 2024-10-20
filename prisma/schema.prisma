@@ -34,6 +34,8 @@ model User {
   Patients Patients[]
 
   Status Status[]
+
+  Mood Mood[]
 }
 
 model Account {
@@ -132,4 +134,12 @@ model Status {
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   status String
+}
+
+model Mood {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mood      String
+  createdAt DateTime @default(now())
 }
