@@ -11,7 +11,7 @@ interface Message {
   content: string;
 }
 
-const chatbotAPIUrl = "https://251a-2409-40f2-3018-58f4-2170-8fab-6db5-fe7b.ngrok-free.app/ask"; // Your chatbot API endpoint
+const chatbotAPIUrl = "192.168.64.34:8000/ask"; // Your chatbot API endpoint
 
 export default function MentalHealthCompanion() {
   const [messages, setMessages] = useState<Message[]>([]);
