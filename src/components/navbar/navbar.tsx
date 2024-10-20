@@ -14,8 +14,11 @@ export default async function Navbar() {
                     {
                         session ? (
                             <div>
-                                <Button asChild variant="destructive" className="font-bold">
+                                <Button asChild variant="destructive" className="font-bold mr-2 ">
                                     <Link href="auth/signout" className="">Sign Out</Link>
+                                </Button>
+                                <Button asChild variant='outline'>
+                                    <Link href="profile" >Profile</Link>
                                 </Button>
                             </div>
                         ) : (

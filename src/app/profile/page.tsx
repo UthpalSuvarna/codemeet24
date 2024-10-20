@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { useSession } from 'next-auth/react'
 
 // Mock data for demonstration
 const user = {
@@ -16,9 +17,9 @@ const user = {
 }
 
 const moodData = {
-  '2023-05-01': 'happy',
-  '2023-05-03': 'neutral',
-  '2023-05-05': 'sad',
+  '2024-10-01': 'happy',
+  '2024-10-03': 'neutral',
+  '2024-10-05': 'sad',
   '2023-05-10': 'happy',
   '2023-05-15': 'neutral',
   '2024-10-5': 'sad',
@@ -38,6 +39,7 @@ const moodIcons = {
 }
 
 export default function ProfilePage() {
+  const { data: session } = useSession();
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
 
@@ -83,9 +85,8 @@ export default function ProfilePage() {
             <Button
               key={index}
               variant="outline"
-              className={`h-16 p-1 flex flex-col items-center justify-between ${
-                isCurrentMonth ? 'opacity-100' : 'opacity-50'
-              } ${isSelected ? 'ring-2 ring-primary' : ''}`}
+              className={`h-16 p-1 flex flex-col items-center justify-between ${isCurrentMonth ? 'opacity-100' : 'opacity-50'
+                } ${isSelected ? 'ring-2 ring-primary' : ''}`}
               onClick={() => handleDateClick(day)}
             >
               <span className="text-sm font-semibold">{format(day, 'd')}</span>
@@ -109,6 +110,7 @@ export default function ProfilePage() {
     }
 
     return (
+
       <div className="flex items-center gap-2">
         <Badge variant="outline" className="text-lg py-1 px-2">
           {moodIcons[mood]}
@@ -120,20 +122,20 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="container mx-auto p-4 space-y-6">
+    <div className="container mx-auto p-4 space-y-6 pt-20">
       <Card>
         <CardHeader className="flex flex-row items-center gap-4">
           <Avatar className="w-20 h-20">
-            <AvatarImage src={user.avatar} alt={user.name} />
+            <AvatarImage src={session?.user?.image ?? undefined} alt={session?.user?.name ?? ""} />
             <AvatarFallback>{user.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
           </Avatar>
           <div>
-            <CardTitle>{user.name}</CardTitle>
-            <CardDescription>{user.email}</CardDescription>
-            <div className="flex items-center mt-2 text-sm text-muted-foreground">
+            <CardTitle>{session?.user.name}</CardTitle>
+            <CardDescription>{session?.user.email}</CardDescription>
+            {/* <div className="flex items-center mt-2 text-sm text-muted-foreground">
               <CalendarIcon className="w-4 h-4 mr-1" />
               Joined {format(new Date(user.joinDate), 'MMMM yyyy')}
-            </div>
+            </div> */}
           </div>
         </CardHeader>
       </Card>
