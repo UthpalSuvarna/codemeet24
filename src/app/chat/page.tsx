@@ -13,7 +13,7 @@ interface Message {
     content: string;
 }
 
-const chatbotAPIUrl = "/ask"; // Your chatbot API endpoint
+const chatbotAPIUrl = "https://a4b3-103-62-151-30.ngrok-free.app/ask"; // Your chatbot API endpoint
 
 export default function MentalHealthCompanion() {
     const { data: session } = useSession();
@@ -137,14 +137,12 @@ export default function MentalHealthCompanion() {
                     {messages.map((message, index) => (
                         <div
                             key={index}
-                            className={`flex ${
-                                message.role === "user" ? "justify-end" : "justify-start"
-                            } mb-4`}
+                            className={`flex ${message.role === "user" ? "justify-end" : "justify-start"
+                                } mb-4`}
                         >
                             <div
-                                className={`flex items-start max-w-[80%] ${
-                                    message.role === "user" ? "flex-row-reverse" : ""
-                                }`}
+                                className={`flex items-start max-w-[80%] ${message.role === "user" ? "flex-row-reverse" : ""
+                                    }`}
                             >
                                 <Avatar className="mt-1 mx-2 bg-muted text-muted-foreground">
                                     {message.role === "user" ? (
@@ -157,11 +155,10 @@ export default function MentalHealthCompanion() {
                                     </AvatarFallback>
                                 </Avatar>
                                 <div
-                                    className={`rounded-lg p-3 ${
-                                        message.role === "user"
-                                            ? "bg-primary text-primary-foreground"
-                                            : "bg-secondary text-secondary-foreground"
-                                    }`}
+                                    className={`rounded-lg p-3 ${message.role === "user"
+                                        ? "bg-primary text-primary-foreground"
+                                        : "bg-secondary text-secondary-foreground"
+                                        }`}
                                     dangerouslySetInnerHTML={{ __html: formatMessage(message.content) }}
                                 />
                             </div>
