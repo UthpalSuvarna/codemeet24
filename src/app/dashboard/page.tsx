@@ -24,12 +24,19 @@ export default async function PsychiatristDashboard() {
     }
   })
 
+  if (!psychiatrist) {
+    return (
+      <div className="pt-20 text-4xl font-bold">
+        Not found
+      </div>
+    )
+  }
+
   console.log(psychiatrist)
 
   const patients = await prisma.patients.findMany({
     where: {
       psychiatristId: psychiatrist?.id,
-
     },
     include: {
       user: true
